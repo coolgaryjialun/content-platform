@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>日本留学私塾 - 自媒体工作台</title>
+<title>日本留学自媒体工作台</title>
 <style>
   :root{
     --bg:#f6f7fb; --panel:#ffffff; --line:#e8eaf1; --txt:#242a3a; --sub:#7a8199;
@@ -102,7 +102,7 @@
 </head>
 <body>
 <header>
-  <div class="logo"><span class="dot">▶</span>日本留学私塾 - 自媒体工作台</div>
+  <div class="logo"><span class="dot">▶</span>日本留学自媒体工作台</div>
   <nav id="nav"></nav>
   <div class="userbox">
     <span class="syncbadge" id="syncBadge"><span class="dot"></span>云端同步</span>
@@ -618,7 +618,7 @@ function exportData(){
   const csv='\ufeff'+head.map(q1).join(',')+'\n'+rows.join('\n');
   const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download='日本留学私塾-自媒体工作台数据_'+todayStr()+'.csv';a.click();
+  a.download='日本留学自媒体工作台数据_'+todayStr()+'.csv';a.click();
   toast('已导出 CSV 数据（'+data.items.length+' 条）');
 }
 async function importData(input){
