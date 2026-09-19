@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日本留学私塾 - 自媒体工作台</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --panel:#ffffff; --line:#e8eaf1; --txt:#242a3a; --sub:#7a8199;
+    --brand:#5b5bd6; --brand-soft:#eeeefc; --ok:#16a34a; --warn:#d97706; --danger:#dc2626;
+    --shadow:0 1px 3px rgba(20,25,50,.06),0 8px 24px rgba(20,25,50,.06);
+    --r:12px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);font-size:14px}
+  header{background:var(--panel);border-bottom:1px solid var(--line);padding:0 24px;display:flex;align-items:center;gap:20px;height:56px;position:sticky;top:0;z-index:10}
+  .logo{font-weight:700;font-size:16px;display:flex;align-items:center;gap:8px}
+  .logo .dot{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,#6366f1,#a855f7);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:14px}
+  nav{display:flex;gap:2px;flex:1;overflow-x:auto}
+  nav button{border:none;background:none;padding:8px 14px;border-radius:8px;cursor:pointer;color:var(--sub);font-size:14px;white-space:nowrap}
+  nav button:hover{background:#f1f2f8;color:var(--txt)}
+  nav button.active{background:var(--brand-soft);color:var(--brand);font-weight:600}
+  .userbox{display:flex;align-items:center;gap:10px}
+  .userbox select{border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:#fff;color:var(--txt);font-size:13px}
+  .iconbtn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 10px;cursor:pointer;color:var(--txt);font-size:13px}
+  .iconbtn:hover{border-color:#c9cddc}
+  main{max-width:1280px;margin:0 auto;padding:24px}
+  .stage-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+  .stage-head h1{font-size:20px}
+  .stage-head p{color:var(--sub);margin-top:4px;font-size:13px}
+  .toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .toolbar input[type=search],.toolbar select{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:#fff;font-size:13px;color:var(--txt)}
+  .btn{border:none;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:13px;font-weight:600}
+  .btn.primary{background:var(--brand);color:#fff}
+  .btn.primary:hover{filter:brightness(1.08)}
+  .btn.ghost{background:#fff;border:1px solid var(--line);color:var(--txt)}
+  .btn.ghost:hover{border-color:#c9cddc}
+  .btn.danger{background:#fef2f2;color:var(--danger);border:1px solid #fecaca}
+  .btn.sm{padding:4px 10px;font-size:12px}
+  .statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+  .stat .num{font-size:24px;font-weight:700}
+  .stat .lbl{color:var(--sub);font-size:12px;margin-top:2px}
+  .stat.brand .num{color:var(--brand)}
+  .grid{display:grid;gap:14px}
+  .cols3{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+  .cols4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:960px){.cols4{grid-template-columns:repeat(2,1fr)}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px}
+  .card .title{font-weight:600;font-size:14px;line-height:1.4}
+  .card .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--sub)}
+  .card .actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px}
+  .tag{display:inline-block;background:#f1f2f8;color:#5b6172;border-radius:6px;padding:2px 8px;font-size:11px}
+  .tag.purple{background:var(--brand-soft);color:var(--brand)}
+  .tag.green{background:#ecfdf5;color:var(--ok)}
+  .tag.orange{background:#fff7ed;color:var(--warn)}
+  .tag.red{background:#fef2f2;color:var(--danger)}
+  .tag.blue{background:#eff6ff;color:#2563eb}
+  .avatar{width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:600;flex:none}
+  .kanban-col{background:#eef0f6;border-radius:var(--r);padding:10px;min-height:200px}
+  .kanban-col h3{font-size:13px;color:var(--sub);margin-bottom:10px;display:flex;justify-content:space-between}
+  .kanban-col .card{box-shadow:none}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+  th,td{padding:11px 14px;text-align:left;font-size:13px;border-bottom:1px solid var(--line);vertical-align:middle}
+  th{background:#fafbfe;color:var(--sub);font-weight:600;font-size:12px;white-space:nowrap}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#fafbff}
+  .modal-mask{position:fixed;inset:0;background:rgba(20,25,50,.4);display:none;align-items:flex-start;justify-content:center;z-index:100;padding:40px 16px;overflow:auto}
+  .modal-mask.open{display:flex}
+  .modal{background:#fff;border-radius:16px;width:560px;max-width:100%;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+  .modal h2{font-size:17px;margin-bottom:16px}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+  .form-row.single{grid-template-columns:1fr}
+  label{display:block;font-size:12px;color:var(--sub);margin-bottom:5px}
+  input[type=text],input[type=date],input[type=number],input[type=url],select,textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;background:#fff;color:var(--txt);font-family:inherit}
+  textarea{resize:vertical;min-height:64px}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brand)}
+  .modal .foot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+  .weekgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+  .daycol{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);min-height:180px;padding:8px}
+  .daycol .dhead{text-align:center;font-size:12px;color:var(--sub);padding-bottom:8px;border-bottom:1px dashed var(--line);margin-bottom:8px}
+  .daycol .dhead b{display:block;font-size:14px;color:var(--txt)}
+  .daycol.today{border-color:var(--brand)}
+  .chip{font-size:11px;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:4px 6px;margin-bottom:6px;cursor:pointer;line-height:1.3}
+  .chip:hover{filter:brightness(.97)}
+  .empty{color:var(--sub);text-align:center;padding:40px 0;font-size:13px}
+  .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .metrics div{background:#fafbfe;border:1px solid var(--line);border-radius:8px;padding:6px 8px;text-align:center}
+  .metrics b{display:block;font-size:15px}
+  .metrics span{font-size:11px;color:var(--sub)}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#242a3a;color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;transition:.3s;z-index:200;pointer-events:none}
+  .toast.show{opacity:1}
+  .section-title{font-size:15px;font-weight:700;margin:24px 0 12px}
+  .muted{color:var(--sub);font-size:12px}
+  .score{display:flex;gap:4px}
+  .score button{width:26px;height:26px;border-radius:6px;border:1px solid var(--line);background:#fff;cursor:pointer;font-size:12px;color:var(--sub)}
+  .score button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .syncbadge{display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--sub)}
+  .syncbadge .dot{width:7px;height:7px;border-radius:50%;background:#22c55e}
+  .syncbadge.off .dot{background:#ef4444}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><span class="dot">▶</span>日本留学私塾 - 自媒体工作台</div>
+  <nav id="nav"></nav>
+  <div class="userbox">
+    <span class="syncbadge" id="syncBadge"><span class="dot"></span>云端同步</span>
+    <span class="muted">我是</span>
+    <select id="meSelect" onchange="setMe(this.value)"></select>
+    <button class="iconbtn" onclick="exportData()" title="导出数据">导出</button>
+    <button class="iconbtn" onclick="document.getElementById('importFile').click()" title="导入数据">导入</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(this)">
+  </div>
+</header>
+<main id="main"></main>
+
+<div class="modal-mask" id="modalMask"><div class="modal" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@tencent-ai/workbuddy-cloud-sdk@dev/lib/index.global.js"></script>
+<script>
+/* ================= 云端数据层 ================= */
+const publicConfig={
+  endpoint:'https://newfield-content-hub.app.workbuddy.host',
+  publishableKey:'wbpk_GVg0EEEqJfo0KVU6Vu4ju0_NVsJ31DUV1ClowePUF48dDK9TxLdGUyF'
+};
+const cloud=WorkBuddyCloud.createWorkBuddyCloud({
+  endpoint:publicConfig.endpoint,
+  publishableKey:publicConfig.publishableKey
+});
+const db=cloud.database;
+
+let data={members:[],items:[]};
+let me=localStorage.getItem('ncw_me')||'';
+let cloudOk=true;
+
+async function q(p,label){
+  const {data:d,error}=await p;
+  if(error){
+    cloudOk=false;updateSyncBadge();
+    toast('⚠️ '+(label||'操作')+'失败：'+(error.message||'网络错误'));
+    throw error;
+  }
+  cloudOk=true;updateSyncBadge();
+  return d;
+}
+function updateSyncBadge(){
+  const b=document.getElementById('syncBadge');
+  if(b)b.classList.toggle('off',!cloudOk);
+}
+function normStatus(i){
+  if(i.stage==='idea')return '待入选';
+  if(i.stage==='topic')return '待排期';
+  if(i.stage==='review')return '已复盘';
+  const m={'待开始':'待制作','制作中':'待制作','审核中':'待审核'};
+  return m[i.produceStatus]||(PRODUCE_STATUS.includes(i.produceStatus)?i.produceStatus:'待制作');
+}
+async function fetchAll(){
+  const [items,members]=await Promise.all([
+    q(db.from('items').select('*').order('id'),'读取内容'),
+    q(db.from('members').select('*').order('id'),'读取成员')
+  ]);
+  data.items=items.map(r=>{const d=Object.assign({},r.data||{},{id:r.id});d.produceStatus=normStatus(d);return d});
+  data.members=members.map(r=>r.name);
+}
+async function dbInsertItem(item){return q(db.from('items').insert({data:item}).select(),'保存内容')}
+async function dbUpdateItem(item){
+  const {id,...rest}=item;
+  const rows=await q(db.from('items').update({data:rest}).eq('id',id).select(),'更新内容');
+  return rows;
+}
+async function dbDeleteItem(id){return q(db.from('items').delete().eq('id',id).select(),'删除内容')}
+async function dbAddMember(name){
+  try{await q(db.from('members').insert({name}).select(),'添加成员')}
+  catch(e){if(e && e.code==='23505')toast('该成员已存在');else throw e}
+}
+async function dbRemoveMember(name){await q(db.from('members').delete().eq('name',name).select(),'移除成员')}
+
+/* 首次运行播种演示数据 */
+async function seedIfEmpty(){
+  if(data.members.length||data.items.length)return;
+  try{
+    await dbAddMember('家伦');await dbAddMember('小林');await dbAddMember('阿May');
+    const d=newItem('日本语言学校择校的 5 个坑','idea');
+    d.note='结合自己踩过的坑，做成避坑清单，小红书图文形式';d.tags=['留学','干货'];d.creator='家伦';
+    const d2=newItem('EJU 考前 30 天冲刺时间表','idea');
+    d2.note='距离考试一个月的每日安排，配一张可保存的时间表图片';d2.tags=['EJU','时间表'];d2.creator='阿May';
+    const d3=newItem('留学第一月开销实录 Vlog','topic');
+    d3.score=4;d3.scoreBy='家伦';d3.note='真实开销更有说服力，评论区互动潜力大';d3.tags=['Vlog','生活'];d3.plannedDate=todayStr();d3.channel='B站';d3.creator='小林';
+    const d4=newItem('日语 N2 高频语法 20 条（上）','schedule');
+    d4.produceStatus='制作中';d4.deadline=todayStr();d4.plannedDate=todayStr();d4.channel='微信公众号';d4.tags=['日语','干货'];d4.creator='阿May';
+    const d5=newItem('在日打工时薪对比调查','review');
+    d5.stage='review';d5.platform='小红书';d5.publishedAt=todayStr()+'T20:00';d5.pubUrl='https://example.com/post/1';
+    d5.metrics={views:12000,likes:860,comments:132,follows:45};
+    d5.wins='数据图做得直观，收藏率高';d5.issues='标题里没带城市名，搜索流量少';d5.actions='下条标题加「东京」关键词';d5.scoreBy='家伦';
+    for(const it of [d,d2,d3,d4,d5]){await dbInsertItem(it)}
+    await fetchAll();
+  }catch(e){/* 播种失败不阻塞 */}
+}
+
+const STAGES=[
+  {key:'idea',name:'灵感收集',icon:'💡',desc:'随手记录灵感、热点与参考素材，好点子不流失'},
+  {key:'topic',name:'选题排期',icon:'🎯',desc:'评估客户吸引力 / 产宣价值 / 重要紧急度，确定价值选题并安排排期'},
+  {key:'schedule',name:'制作进展',icon:'🗓️',desc:'双周排期 + 制作进度管理（制作人 / 审核人 / 当前状态）'},
+  {key:'review',name:'复盘优化',icon:'📊',desc:'记录数据表现与经验教训，反哺下一次选题'},
+];
+const PRODUCE_STATUS=['待入选','待排期','待制作','待审核','已发布','已复盘'];
+const RATING_FIELDS=[{k:'appeal',label:'客户吸引力'},{k:'promo',label:'产宣价值'},{k:'urgency',label:'重要紧急度'}];
+const RATING_LEVELS=['高','中','低'];
+const PLATFORMS=['微信公众号','小红书','抖音','B站','视频号','知乎','微博','其他'];
+
+function setMe(m){me=m;localStorage.setItem('ncw_me',m);render()}
+function avatarColor(n){const cs=['#6366f1','#0ea5e9','#10b981','#f59e0b','#ef4444','#a855f7','#14b8a6'];let h=0;for(const c of n)h=(h*31+c.charCodeAt(0))>>>0;return cs[h%cs.length]}
+function avatarHtml(n){return '<span class="avatar" style="background:'+avatarColor(n)+'">'+n.slice(0,1)+'</span>'}
+function getItem(id){return data.items.find(x=>x.id==id)}
+function todayStr(){const d=new Date();return d.toISOString().slice(0,10)}
+function plusDays(n){const d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
+function ctArr(i){const c=i.contentType;return Array.isArray(c)?c:(c?[c]:['图文'])}
+function ctVal(i){const c=i.contentType;return Array.isArray(c)?(c.join('+')||'图文'):(c||'图文')}
+function ctTag(i){
+  const c=Array.isArray(i.contentType)?(i.contentType.join('+')):(i.contentType||'图文');
+  const cls=c==='视频'?'orange':(c==='图文+视频'?'purple':'blue');
+  const icon=c==='视频'?'🎬':(c==='图文+视频'?'🎬📷':'📷');
+  return '<span class="tag '+cls+'">'+icon+' '+c+'</span>';
+}
+function fmtDate(s){if(!s)return '—';return s.slice(5).replace('-','/')}
+
+function newItem(title,stage){
+  return {title,stage,creator:me,assignee:me,producer:'',reviewer:'',tags:[],createdAt:Date.now(),
+    note:'',refUrl:'',contentType:'图文',ratings:{appeal:'',promo:'',urgency:''},
+    angle:'',score:0,scoreBy:'',reason:'',
+    plannedDate:'',channel:'',
+    produceStatus:'待入选',deadline:'',
+    platform:'',publishedAt:'',pubUrl:'',
+    metrics:{views:null,likes:null,comments:null,follows:null,favs:null,shares:null},
+    wins:'',issues:'',actions:'',reviewedAt:''};
+}
+function stageCount(s){return data.items.filter(i=>i.stage===s).length}
+function ratingTags(i){const r=i.ratings||{};return RATING_FIELDS.filter(f=>r[f.k]).map(f=>'<span class="tag blue">'+f.label+' '+r[f.k]+'</span>').join('')}
+function statusTag(i){
+  const st=PRODUCE_STATUS.includes(i.produceStatus)?i.produceStatus:'待入选';
+  const cls={'待入选':'','待排期':'purple','待制作':'blue','待审核':'orange','已发布':'green','已复盘':'green'}[st];
+  return '<span class="tag '+cls+'">'+st+'</span>';
+}
+function ratingSelect(id,val){return '<select id="'+id+'"><option value="">未评</option>'+RATING_LEVELS.map(n=>'<option '+(val===n?'selected':'')+'>'+n+'</option>').join('')+'</select>'}
+function memberSel(val,onch){return '<select style="padding:4px 6px;font-size:12px" '+(onch?'onchange="'+onch+'"':'')+'><option value="">—</option>'+data.members.map(m=>'<option '+(m===val?'selected':'')+'>'+m+'</option>').join('')+'</select>'}
+function ratingRow(id,field,label,val){
+  return '<div style="display:flex;align-items:center;gap:6px"><span class="muted" style="width:78px;flex:none;font-size:12px">'+label+'</span><div class="score">'+RATING_LEVELS.map(n=>'<button class="'+(val===n?'on':'')+'" onclick="setTopicRating(\''+id+'\',\''+field+'\',\''+n+'\')">'+n+'</button>').join('')+'</div></div>';
+}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._tm);t._tm=setTimeout(()=>t.classList.remove('show'),2200)}
+
+/* ================= 布局 ================= */
+const main=document.getElementById('main');
+let curView='dashboard';
+const NAVS=[{key:'dashboard',name:'总览',icon:'🏠'},...STAGES.map(s=>({key:s.key,name:s.name,icon:s.icon})),{key:'members',name:'成员',icon:'👥'}];
+document.getElementById('nav').innerHTML=NAVS.map(n=>'<button data-v="'+n.key+'" onclick="go(\''+n.key+'\')">'+n.icon+' '+n.name+'</button>').join('');
+function go(v){curView=v;render()}
+
+function render(){
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('active',b.dataset.v===curView));
+  const meSel=document.getElementById('meSelect');
+  meSel.innerHTML=data.members.map(m=>'<option '+(m===me?'selected':'')+'>'+m+'</option>').join('');
+  if(!me&&data.members.length){me=data.members[0]}
+  if(curView==='dashboard')return viewDashboard();
+  if(curView==='members')return viewMembers();
+  if(curView==='idea')return viewIdea();
+  if(curView==='topic')return viewTopic();
+  if(curView==='schedule')return viewSchedule();
+  if(curView==='review')return viewReview();
+}
+
+function stageHeader(s,extraBtns){
+  return '<div class="stage-head"><div><h1>'+s.icon+' '+s.name+'</h1><p>'+s.desc+'</p></div><div class="toolbar">'+(extraBtns||'')+'</div></div>';
+}
+
+/* ================= 总览 ================= */
+function viewDashboard(){
+  const total=data.items.length;
+  const published=data.items.filter(i=>i.stage==='review'||i.produceStatus==='已发布').length;
+  const doing=data.items.filter(i=>i.stage==='schedule').length;
+  const reviewed=data.items.filter(i=>i.stage==='review').length;
+  let totViews=0,totLikes=0;
+  data.items.filter(i=>i.stage==='review').forEach(i=>{totViews+=+(i.metrics.views||0);totLikes+=+(i.metrics.likes||0)});
+  const upcoming=data.items.filter(i=>i.deadline&&['topic','schedule'].includes(i.stage)).sort((a,b)=>a.deadline.localeCompare(b.deadline)).slice(0,6);
+  const withData=data.items.filter(i=>i.metrics&&(i.metrics.views||i.metrics.likes));
+  const topViews=[...withData].sort((a,b)=>(+b.metrics.views||0)-(+a.metrics.views||0)).slice(0,3);
+  const topLikes=[...withData].sort((a,b)=>(+b.metrics.likes||0)-(+a.metrics.likes||0)).slice(0,3);
+  const allTopics=data.items.filter(i=>['topic','schedule','review'].includes(i.stage)).sort((a,b)=>b.createdAt-a.createdAt);
+  main.innerHTML=
+  '<div class="stage-head"><div><h1>🏠 总览</h1><p>内容生产全流程一屏掌握 · 团队数据云端实时同步</p></div><div class="toolbar"><button class="btn primary" onclick="openNewIdea()">＋ 新灵感</button></div></div>'
+  +'<div class="statgrid">'
+  +stat(total,'灵感与内容总数','brand')+stat(doing,'进行中（排期/制作）','')+stat(published,'已发布','')+stat(reviewed,'已复盘','')
+  +'</div>'
+  +(reviewed?'<div class="statgrid"><div class="stat"><div class="num">'+totViews.toLocaleString()+'</div><div class="lbl">累计曝光/阅读</div></div><div class="stat"><div class="num">'+totLikes.toLocaleString()+'</div><div class="lbl">累计点赞</div></div></div>':'')
+  +'<div class="section-title">🔥 Top3 数据表现</div>'
+  +'<div class="grid cols3">'
+  +'<div class="card"><div class="title">📈 曝光/阅读 Top3</div>'+(topViews.length?topViews.map((i,n)=>topRow(n,i.title,i.metrics.views)).join(''):'<div class="muted">暂无数据，先在「复盘优化」里填写曝光</div>')+'</div>'
+  +'<div class="card"><div class="title">❤️ 点赞 Top3</div>'+(topLikes.length?topLikes.map((i,n)=>topRow(n,i.title,i.metrics.likes)).join(''):'<div class="muted">暂无数据，先在「复盘优化」里填写点赞</div>')+'</div>'
+  +'</div>'
+  +'<div class="section-title">近期排期</div>'
+  +(upcoming.length?'<div class="grid cols3">'+upcoming.map(cardMini).join('')+'</div>':'<div class="empty">暂无排期，去「选题排期」里推进选题吧</div>')
+  +'<div class="section-title">全部选题列表（'+allTopics.length+'）</div>'
+  +(allTopics.length?'<table><tr><th>主题</th><th>客户吸引力</th><th>产宣价值</th><th>重要紧急度</th><th>发布截至日</th><th>状态</th><th>负责人</th></tr>'
+    +allTopics.map(i=>{const r=i.ratings||{};return '<tr><td><b>'+esc(i.title)+'</b></td><td>'+(r.appeal||'—')+'</td><td>'+(r.promo||'—')+'</td><td>'+(r.urgency||'—')+'</td><td>'+(i.deadline?fmtDate(i.deadline)+(i.deadline<todayStr()?' <span class="tag red">已过期</span>':''):'—')+'</td><td>'+statusTag(i)+'</td><td>'+avatarHtml(i.assignee||i.creator)+' '+esc(i.assignee||'')+'</td></tr>'}).join('')
+    +'</table>':'<div class="empty">暂无选题</div>');
+  function stat(n,l,cls){return '<div class="stat '+cls+'"><div class="num">'+n+'</div><div class="lbl">'+l+'</div></div>'}
+  function topRow(n,t,val){return '<div style="display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px"><span>'+(n+1)+'. '+esc(t)+'</span><b>'+(+val).toLocaleString()+'</b></div>'}
+}
+function cardMini(i){
+  const st=STAGES.find(s=>s.key===i.stage)||{icon:'📄',name:'进行中'};
+  return '<div class="card" onclick="openDetail(\''+i.id+'\')"><div class="title">'+i.title+'</div><div class="meta"><span class="tag purple">'+st.icon+' '+st.name+'</span>'+(i.deadline?'<span>🗓 '+fmtDate(i.deadline)+'</span>':(i.plannedDate?'<span>🗓 '+fmtDate(i.plannedDate)+'</span>':''))+avatarHtml(i.assignee||i.creator)+'</div></div>';
+}
+
+/* ================= 灵感收集 ================= */
+function viewIdea(){
+  const s=STAGES[0];
+  const items=data.items.filter(i=>i.stage==='idea').sort((a,b)=>b.createdAt-a.createdAt);
+  main.innerHTML=stageHeader(s,'<input type="search" placeholder="搜索灵感…" oninput="filterCards(this.value,\'idea\')">')
+  +'<div class="grid cols3" id="cards-idea">'+(items.length?items.map(cardIdea).join(''):'<div class="empty">灵感池是空的，点击下方按钮随手记一条 💡</div>')+'</div>'
+  +'<div style="margin-top:16px;text-align:center"><button class="btn primary" onclick="openNewIdea()">＋ 记录灵感</button></div>';
+}
+function cardIdea(i){
+  return '<div class="card" data-title="'+i.title.toLowerCase()+'">'
+  +'<div class="title">'+esc(i.title)+'</div>'
+  +(i.note?'<div class="muted">'+esc(i.note)+'</div>':'')
+  +(i.refUrl?'<a class="muted" href="'+esc(i.refUrl)+'" target="_blank" style="word-break:break-all">🔗 参考链接/对标链接</a>':'')
+  +'<div class="meta">'+ctTag(i)+(i.tags||[]).map(t=>'<span class="tag">'+esc(t)+'</span>').join('')+ratingTags(i)
+  +(i.deadline?'<span class="tag '+(i.deadline<todayStr()?'red':'orange')+'">发布截至 '+fmtDate(i.deadline)+'</span>':'')
+  +'<span>提交 '+fmtDate(new Date(i.createdAt).toISOString().slice(0,10))+'</span>'+avatarHtml(i.assignee||i.creator)+'<span>'+esc(i.assignee||'')+'</span></div>'
+  +'<div class="actions"><button class="btn sm primary" onclick="promoteToTopic(\''+i.id+'\')">→ 确定为价值选题</button><button class="btn sm ghost" onclick="openEdit(\''+i.id+'\')">编辑</button><button class="btn sm danger" onclick="delItem(\''+i.id+'\')">删除</button></div>'
+  +'</div>';
+}
+async function openNewIdea(){
+  openModal('💡 记录灵感','<div class="form-row single"><div><label>主题 *</label><input type="text" id="f_title" placeholder="例：日本语言学校择校的 5 个坑"></div></div>'
+  +'<div class="form-row single"><div><label>补充说明</label><textarea id="f_note" placeholder="角度、素材、为什么值得做…"></textarea></div></div>'
+  +'<div class="form-row"><div><label>负责人 *</label><select id="f_assignee">'+memberOptions(me)+'</select></div><div><label>标签（逗号分隔）</label><input type="text" id="f_tags" placeholder="留学,干货"></div></div>'
+  +'<div class="form-row"><div><label>提交日期 *</label><input type="date" id="f_submit" value="'+todayStr()+'"></div><div><label>发布截至日 *</label><input type="date" id="f_deadline" value="'+plusDays(7)+'"></div></div>'
+  +'<div class="form-row"><div><label>形式</label><select id="f_ct">'+['图文','视频','图文+视频'].map(c=>'<option '+(c==='图文'?'selected':'')+'>'+c+'</option>').join('')+'</select></div><div><label>客户吸引力</label>'+ratingSelect('f_appeal','')+'</div></div>'
+  +'<div class="form-row"><div><label>产宣价值</label>'+ratingSelect('f_promo','')+'</div><div><label>重要紧急度</label>'+ratingSelect('f_urgency','')+'</div></div>'
+  +'<div class="form-row single"><div><label>参考链接/对标链接</label><input type="url" id="f_refUrl" placeholder="https://…（可填多个，空格分隔）"></div></div>',
+  async function(){
+    const t=v('f_title');
+    if(!t)return toast('请填写主题（必填）');
+    if(!v('f_submit'))return toast('请选择提交日期（必填）');
+    if(!v('f_deadline'))return toast('请选择发布截至日（必填）');
+    const cts=[...document.getElementById('f_ct').selectedOptions].map(o=>o.value);
+    const item=Object.assign(newItem(t,'idea'),{note:v('f_note'),refUrl:v('f_refUrl'),assignee:v('f_assignee'),
+      tags:splitTags(v('f_tags')),plannedDate:v('f_submit'),deadline:v('f_deadline'),contentType:cts[0]||'图文',
+      ratings:{appeal:v('f_appeal'),promo:v('f_promo'),urgency:v('f_urgency')}});
+    try{await dbInsertItem(item);await fetchAll();closeModal();toast('已存入灵感池');render()}catch(e){}
+  });
+}
+function promoteToTopic(id){
+  const i=getItem(id);if(!i)return;
+  const r=i.ratings||{};
+  openModal('💡 确定为价值选题',
+  '<div class="form-row single"><div><b style="font-size:14px">'+esc(i.title)+'</b></div></div>'
+  +'<div class="form-row single"><div><label>请完成三项评估（必选）</label></div></div>'
+  +'<div class="form-row single"><div style="display:flex;flex-direction:column;gap:4px">'
+  +['appeal','promo','urgency'].map(f=>{const label=RATING_FIELDS.find(x=>x.k===f).label;return '<div style="display:flex;align-items:center;gap:6px"><span class="muted" style="width:78px;flex:none;font-size:12px">'+label+' *</span><div class="score" data-field="'+f+'">'+RATING_LEVELS.map(n=>'<button type="button" class="'+(r[f]===n?'on':'')+'" onclick="pickM(this)">'+n+'</button>').join('')+'</div></div>'}).join('')
+  +'</div></div>'
+  +'<p class="muted">三项评估完成后才能确认；确认后该灵感将进入「选题排期」页面，状态置为「待排期」。</p>',
+  async function(){
+    const vals={};
+    document.querySelectorAll('#modalBox .score[data-field]').forEach(box=>{
+      const on=box.querySelector('button.on');
+      if(on)vals[box.dataset.field]=on.textContent;
+    });
+    for(const f of ['appeal','promo','urgency']){
+      if(!vals[f])return toast('请完成「'+RATING_FIELDS.find(x=>x.k===f).label+'」评估（必选）');
+    }
+    i.ratings={appeal:vals.appeal,promo:vals.promo,urgency:vals.urgency};i.scoreBy=me;
+    i.stage='topic';i.produceStatus='待排期';
+    try{await dbUpdateItem(i);await fetchAll();closeModal();toast('已确定为价值选题（待排期）');go('topic')}catch(e){}
+  },'确认');
+}
+function pickM(btn){
+  btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+function filterCards(kw,stage){
+  kw=kw.trim().toLowerCase();
+  document.querySelectorAll('#cards-'+stage+' .card').forEach(c=>{
+    c.style.display=(!kw||c.dataset.title.includes(kw))?'':'none';
+  });
+}
+
+/* ================= 选题排期 ================= */
+function viewTopic(){
+  const s=STAGES[1];
+  const items=data.items.filter(i=>i.stage==='topic').sort((a,b)=>b.createdAt-a.createdAt);
+  main.innerHTML=stageHeader(s)
+  +'<p class="muted" style="margin-bottom:14px">对候选选题评估客户吸引力 / 产宣价值 / 重要紧急度（高·中·低），点击「确定排期」并指定制作人 / 审核人 / 发布截至日后进入「制作进展」。全部选题列表见「总览」页。</p>'
+  +(items.length?'<div class="grid cols3">'+items.map(cardTopic).join('')+'</div>':'<div class="empty">暂无候选选题，从「灵感收集」确定为价值选题后过来 🎯</div>');
+}
+function cardTopic(i){
+  const r=i.ratings||{};
+  return '<div class="card">'
+  +'<div class="title">'+esc(i.title)+'</div>'
+  +(i.note?'<div class="muted">'+esc(i.note)+'</div>':'')
+  +RATING_FIELDS.map(f=>ratingRow(i.id,f.k,f.label,r[f.k])).join('')
+  +'<div class="meta">'+ctTag(i)+statusTag(i)+'<span>评估人：'+esc(i.scoreBy||'—')+'</span></div>'
+  +'<div class="actions"><button class="btn sm primary" onclick="openScheduleForm(\''+i.id+'\')">✅ 确定排期</button><button class="btn sm ghost" onclick="openEdit(\''+i.id+'\')">编辑</button></div>'
+  +'</div>';
+}
+async function setTopicRating(id,field,n){
+  const i=getItem(id);if(!i)return;
+  i.ratings=Object.assign({appeal:'',promo:'',urgency:''},i.ratings||{});
+  i.ratings[field]=n;i.scoreBy=me;
+  try{await dbUpdateItem(i);await fetchAll();render()}catch(e){}
+}
+function openScheduleForm(id){
+  const i=getItem(id);if(!i)return;
+  openModal('🗓️ 确定排期',
+  '<div class="form-row single"><div><b style="font-size:14px">'+esc(i.title)+'</b></div></div>'
+  +'<div class="form-row"><div><label>制作人 *</label><select id="f_producer"><option value="">—</option>'+memberOptions(i.producer||me)+'</select></div>'
+  +'<div><label>审核人 *</label><select id="f_reviewer"><option value="">—</option>'+memberOptions(i.reviewer||'')+'</select></div></div>'
+  +'<div class="form-row single"><div><label>发布截至日 *</label><input type="date" id="f_deadline" value="'+(i.deadline||plusDays(7))+'"></div></div>'
+  +'<p class="muted">确认后状态置为「待制作」，进入「制作进展」。</p>',
+  async function(){
+    if(!v('f_producer'))return toast('请选择制作人（必填）');
+    if(!v('f_reviewer'))return toast('请选择审核人（必填）');
+    if(!v('f_deadline'))return toast('请选择发布截至日（必填）');
+    i.stage='schedule';i.producer=v('f_producer');i.reviewer=v('f_reviewer');i.deadline=v('f_deadline');
+    if(!i.plannedDate)i.plannedDate=todayStr();
+    i.produceStatus='待制作';
+    try{await dbUpdateItem(i);await fetchAll();closeModal();toast('排期已确定，进入制作进展（待制作）');go('schedule')}catch(e){}
+  },'确认');
+}
+
+/* ================= 制作进展 ================= */
+function viewSchedule(){
+  const s=STAGES[2];
+  const all=data.items.filter(i=>i.stage==='schedule');
+  const items=all.filter(i=>i.deadline).sort((a,b)=>a.deadline.localeCompare(b.deadline));
+  const days=curDays(14);
+  const dayNames=['一','二','三','四','五','六','日'];
+  let cols='';
+  for(let d=0;d<14;d++){
+    const ds=days[d];
+    const dayItems=items.filter(i=>i.deadline===ds);
+    const isToday=ds===todayStr();
+    const isNextWeek=d>=7;
+    cols+='<div class="daycol '+(isToday?'today':'')+'"'+(isNextWeek?' style="background:#fbfbfe"':'')+'><div class="dhead">周'+dayNames[d%7]+'<b>'+ds.slice(5).replace('-','/')+'</b></div>'
+      +dayItems.map(i=>'<div class="chip" onclick="openDetail(\''+i.id+'\')">'+STAGE_ICON[i.stage]+' '+esc(i.title)+'<br><span class="muted">'+esc(i.assignee||'')+'</span></div>').join('')
+      +'</div>';
+  }
+  const listItems=all.slice().sort((a,b)=>(a.deadline||'9999').localeCompare(b.deadline||'9999'));
+  main.innerHTML=stageHeader(s)
+  +'<div style="display:flex;gap:8px;align-items:center;margin-bottom:12px"><button class="btn ghost" onclick="shiftWeek(-1)">← 前两周</button><b>'+days[0]+' ~ '+days[13]+'（双周视图 · 按发布截至日）</b><button class="btn ghost" onclick="shiftWeek(1)">后两周 →</button><button class="btn ghost" onclick="shiftWeek(0)">本周起</button></div>'
+  +'<div class="weekgrid">'+cols+'</div>'
+  +'<div class="section-title">制作进展管理（'+listItems.length+'）</div>'
+  +'<p class="muted" style="margin-bottom:10px">在这里管理所有内容的制作进度：指定制作人与审核人，直接更新当前状态；状态为「已发布」后可送去「复盘优化」。</p>'
+  +(listItems.length?'<table><tr><th>内容</th><th>发布截至日</th><th>负责人</th><th>制作人</th><th>审核人</th><th>当前状态</th><th>操作</th></tr>'
+    +listItems.map(i=>'<tr>'
+      +'<td><b>'+esc(i.title)+'</b>'+ctTag(i)+(i.script?' <span class="tag green">有脚本</span>':'')+'</td>'
+      +'<td>'+(i.deadline?fmtDate(i.deadline)+(i.deadline<todayStr()?' <span class="tag red">已过期</span>':''):'—')+'</td>'
+      +'<td>'+avatarHtml(i.assignee||i.creator)+' '+esc(i.assignee||'')+'</td>'
+      +'<td>'+memberSel(i.producer,'setField(\''+i.id+'\',\'producer\',this.value)')+'</td>'
+      +'<td>'+memberSel(i.reviewer,'setField(\''+i.id+'\',\'reviewer\',this.value)')+'</td>'
+      +'<td><select style="padding:4px 6px;font-size:12px" onchange="setField(\''+i.id+'\',\'produceStatus\',this.value)">'+PRODUCE_STATUS.map(st=>'<option '+(i.produceStatus===st?'selected':'')+'>'+st+'</option>').join('')+'</select></td>'
+      +'<td style="white-space:nowrap"><button class="btn sm ghost" onclick="openScript(\''+i.id+'\')">📜 补充内容脚本</button>'
+      +(i.produceStatus==='已发布'?' <button class="btn sm primary" onclick="goReview(\''+i.id+'\')">复盘</button>':'')
+      +' <button class="btn sm ghost" onclick="openEdit(\''+i.id+'\')">调整排期</button></td></tr>').join('')
+    +'</table>':'<div class="empty">暂无内容：到「选题排期」确定排期后会进入这里</div>');
+}
+const STAGE_ICON={};STAGES.forEach(s=>STAGE_ICON[s.key]=s.icon);
+let weekOffset=0;
+function curDays(n){
+  const d=new Date();const day=(d.getDay()+6)%7;
+  d.setDate(d.getDate()-day+weekOffset*7);
+  const out=[];for(let i=0;i<n;i++){const x=new Date(d);x.setDate(d.getDate()+i);out.push(x.toISOString().slice(0,10))}
+  return out;
+}
+function shiftWeek(n){weekOffset=n===0?0:weekOffset+n;render()}
+
+async function goReview(id){
+  const i=getItem(id);i.stage='review';i.produceStatus='已复盘';
+  try{await dbUpdateItem(i);await fetchAll();go('review');openReviewForm(id)}catch(e){}
+}
+async function setField(id,field,val){
+  const i=getItem(id);if(!i)return;
+  i[field]=val;
+  try{await dbUpdateItem(i);await fetchAll();if(field==='produceStatus'&&val==='已发布')toast('已发布！可以点「复盘」沉淀数据了');render()}catch(e){}
+}
+
+function openScript(id){
+  const i=getItem(id);if(!i)return;
+  openModal('📜 内容脚本 · '+esc(i.title),
+  '<div class="form-row single"><div><label>脚本正文（口播稿 / 分镜 / 文案）</label><textarea id="s_body" style="min-height:240px">'+esc(i.script||'')+'</textarea></div></div>',
+  async function(){
+    i.script=v('s_body');
+    try{await dbUpdateItem(i);await fetchAll();closeModal();toast('脚本已保存');render()}catch(e){}
+  });
+}
+
+/* ================= 复盘优化 ================= */
+function viewReview(){
+  const s=STAGES[3];
+  const items=data.items.filter(i=>i.stage==='review').sort((a,b)=>(b.metrics.views||0)-(a.metrics.views||0));
+  main.innerHTML=stageHeader(s)
+  +'<p class="muted" style="margin-bottom:14px">发布后的内容在这里沉淀数据与经验；表现好的选题思路会反哺灵感池。</p>'
+  +(items.length?'<div class="grid cols3">'+items.map(cardReview).join('')+'</div>':'<div class="empty">暂无复盘记录：在「制作进展」把状态更新为「已发布」后，点「复盘」送过来 📊</div>');
+}
+function cardReview(i){
+  const m=i.metrics;const er=(m.views?(+m.likes+ +m.comments)/m.views*100:null);
+  return '<div class="card">'
+  +'<div class="title">'+esc(i.title)+'</div>'
+  +'<div class="metrics">'
+  +'<div><b>'+(m.views??'—')+'</b><span>曝光/阅读</span></div><div><b>'+(m.likes??'—')+'</b><span>点赞</span></div>'
+  +'<div><b>'+(m.comments??'—')+'</b><span>评论</span></div><div><b>'+(m.follows??'—')+'</b><span>涨粉</span></div>'
+  +'<div><b>'+(m.favs??'—')+'</b><span>收藏</span></div><div><b>'+(m.shares??'—')+'</b><span>转发</span></div>'
+  +'</div>'
+  +(er!==null?'<div class="muted">互动率 '+er.toFixed(1)+'%</div>':'')
+  +(i.wins?'<div class="muted">✅ 做得好：'+esc(i.wins)+'</div>':'')
+  +(i.issues?'<div class="muted">⚠️ 问题：'+esc(i.issues)+'</div>':'')
+  +(i.actions?'<div class="muted">🔁 下次改进：'+esc(i.actions)+'</div>':'')
+  +'<div class="meta"><span class="tag blue">'+esc(i.platform||'—')+'</span><span>复盘人：'+esc(i.scoreBy||'—')+'</span></div>'
+  +'<div class="actions"><button class="btn sm primary" onclick="openReviewForm(\''+i.id+'\')">填写/更新复盘</button><button class="btn sm ghost" onclick="backToIdea(\''+i.id+'\')">💡 存为灵感</button></div>'
+  +'</div>';
+}
+function openReviewForm(id){
+  const i=getItem(id);const m=i.metrics;
+  openModal('📊 复盘：'+esc(i.title),
+  '<div class="form-row"><div><label>曝光/阅读</label><input type="number" id="f_views" value="'+(m.views??'')+'"></div><div><label>点赞</label><input type="number" id="f_likes" value="'+(m.likes??'')+'"></div></div>'
+  +'<div class="form-row"><div><label>评论</label><input type="number" id="f_comments" value="'+(m.comments??'')+'"></div><div><label>涨粉</label><input type="number" id="f_follows" value="'+(m.follows??'')+'"></div></div>'
+  +'<div class="form-row"><div><label>收藏</label><input type="number" id="f_favs" value="'+(m.favs??'')+'"></div><div><label>转发/分享</label><input type="number" id="f_shares" value="'+(m.shares??'')+'"></div></div>'
+  +'<div class="form-row single"><div><label>✅ 做得好的</label><textarea id="f_wins">'+esc(i.wins||'')+'</textarea></div></div>'
+  +'<div class="form-row single"><div><label>⚠️ 存在的问题</label><textarea id="f_issues">'+esc(i.issues||'')+'</textarea></div></div>'
+  +'<div class="form-row single"><div><label>🔁 下次的改进动作</label><textarea id="f_actions">'+esc(i.actions||'')+'</textarea></div></div>',
+  async function(){
+    i.metrics={views:v('f_views')||null,likes:v('f_likes')||null,comments:v('f_comments')||null,follows:v('f_follows')||null,favs:v('f_favs')||null,shares:v('f_shares')||null};
+    i.wins=v('f_wins');i.issues=v('f_issues');i.actions=v('f_actions');i.scoreBy=me;i.reviewedAt=todayStr();
+    try{await dbUpdateItem(i);await fetchAll();closeModal();toast('复盘已保存');render()}catch(e){}
+  });
+}
+async function backToIdea(id){
+  const i=getItem(id);
+  const copy=JSON.parse(JSON.stringify(i));delete copy.id;copy.stage='idea';copy.creator=me;copy.createdAt=Date.now();
+  copy.title='（复用思路）'+i.title;
+  try{await dbInsertItem(copy);await fetchAll();toast('已存回灵感池');go('idea')}catch(e){}
+}
+
+/* ================= 成员 ================= */
+function viewMembers(){
+  main.innerHTML='<div class="stage-head"><div><h1>👥 成员协作</h1><p>团队共用一份云端看板：每人选择自己的昵称身份，所有成员实时看到彼此的更新。</p></div></div>'
+  +'<div style="display:flex;gap:8px;margin-bottom:16px"><input type="text" id="m_name" placeholder="输入成员昵称" style="width:220px"><button class="btn primary" onclick="addMember()">＋ 添加成员</button></div>'
+  +'<table><tr><th>成员</th><th>负责中内容</th><th>累计创建</th><th>操作</th></tr>'
+  +data.members.map(m=>{
+    const resp=data.items.filter(i=>i.assignee===m&&['schedule','produce'].includes(i.stage)).length;
+    const created=data.items.filter(i=>i.creator===m).length;
+    return '<tr><td>'+avatarHtml(m)+' <b>'+esc(m)+'</b>'+(m===me?' <span class="tag purple">我</span>':'')+'</td><td>'+resp+'</td><td>'+created+'</td><td>'+(data.members.length>1?'<button class="btn sm danger" onclick="removeMember(\''+esc(m)+'\')">移除</button>':'<span class="muted">至少保留一人</span>')+'</td></tr>';
+  }).join('')+'</table>'
+  +'<div class="section-title">协作说明</div>'
+  +'<div class="card"><p class="muted" style="line-height:1.8">本平台已上线公网：把链接发给团队成员，各自打开后选择自己的昵称即可协作，数据云端共享、每 5 秒自动刷新同步。⚠️ 当前为<b>昵称身份模式</b>（无需注册登录），知道链接的人都可以查看和编辑，适合小团队内部使用；如需账号权限管控（谁能看/谁能改）可以告诉我升级。</p></div>';
+}
+async function addMember(){
+  const n=document.getElementById('m_name').value.trim();
+  if(!n)return toast('请输入昵称');
+  if(data.members.includes(n))return toast('该成员已存在');
+  try{await dbAddMember(n);await fetchAll();toast('已添加 '+n);render()}catch(e){}
+}
+async function removeMember(m){
+  try{await dbRemoveMember(m);await fetchAll();if(me===m)me=data.members[0]||'';localStorage.setItem('ncw_me',me);render()}catch(e){}
+}
+function memberOptions(sel){
+  return data.members.map(m=>'<option '+(m===sel?'selected':'')+'>'+m+'</option>').join('');
+}
+
+/* ================= 通用：详情/编辑/删除 ================= */
+function openDetail(id){openEdit(id)}
+function openEdit(id){
+  const i=getItem(id);if(!i)return;
+  const r=i.ratings||{};
+  openModal('✏️ 编辑 · '+(STAGES.find(s=>s.key===i.stage)||{name:'内容'}).name,
+  '<div class="form-row single"><div><label>标题</label><input type="text" id="e_title" value="'+esc(i.title)+'"></div></div>'
+  +'<div class="form-row"><div><label>负责人</label><select id="e_assignee">'+memberOptions(i.assignee||me)+'</select></div>'
+  +'<div><label>提交日期</label><input type="date" id="e_date" value="'+(i.plannedDate||'')+'"></div></div>'
+  +'<div class="form-row"><div><label>制作人</label><select id="e_producer"><option value="">—</option>'+memberOptions(i.producer||'')+'</select></div>'
+  +'<div><label>审核人</label><select id="e_reviewer"><option value="">—</option>'+memberOptions(i.reviewer||'')+'</select></div></div>'
+  +'<div class="form-row"><div><label>发布渠道/平台</label><select id="e_channel"><option value="">—</option>'+PLATFORMS.map(p=>'<option '+(i.channel===p?'selected':'')+'>'+p+'</option>').join('')+'</select></div>'
+  +'<div><label>发布截至日</label><input type="date" id="e_deadline" value="'+(i.deadline||'')+'"></div></div>'
+  +'<div class="form-row"><div><label>形式</label><select id="e_ct">'+['图文','视频','图文+视频'].map(c=>'<option '+(ctVal(i)===c?'selected':'')+'>'+c+'</option>').join('')+'</select></div>'
+  +(i.stage!=='idea'?'<div><label>制作状态</label><select id="e_status">'+PRODUCE_STATUS.map(st=>'<option '+(i.produceStatus===st?'selected':'')+'>'+st+'</option>').join('')+'</select></div>':'<div></div>')+'</div>'
+  +'<div class="form-row"><div><label>客户吸引力</label>'+ratingSelect('e_appeal',r.appeal||'')+'</div><div><label>产宣价值</label>'+ratingSelect('e_promo',r.promo||'')+'</div></div>'
+  +'<div class="form-row"><div><label>重要紧急度</label>'+ratingSelect('e_urgency',r.urgency||'')+'</div><div><label>参考链接/对标链接</label><input type="url" id="e_refUrl" value="'+esc(i.refUrl||'')+'" placeholder="https://…"></div></div>'
+  +'<div class="form-row single"><div><label>内容脚本（口播稿 / 分镜 / 文案正文）</label><textarea id="e_script" style="min-height:120px" placeholder="在这里撰写或粘贴内容脚本…">'+esc(i.script||'')+'</textarea></div></div>'
+  +'<div class="form-row single"><div><label>备注/说明</label><textarea id="e_note">'+esc(i.note||'')+'</textarea></div></div>',
+  async function(){
+    i.title=v('e_title')||i.title;i.assignee=v('e_assignee');i.plannedDate=v('e_date');
+    i.producer=v('e_producer');i.reviewer=v('e_reviewer');
+    i.channel=v('e_channel');i.deadline=v('e_deadline');i.note=v('e_note');i.script=v('e_script');
+    i.refUrl=v('e_refUrl');i.contentType=v('e_ct')||'图文';
+    i.ratings={appeal:v('e_appeal'),promo:v('e_promo'),urgency:v('e_urgency')};
+    i.produceStatus=v('e_status')||i.produceStatus;
+    try{await dbUpdateItem(i);await fetchAll();closeModal();toast('已保存');render()}catch(e){}
+  });
+}
+async function delItem(id){
+  if(!confirm('确定删除这条内容？删除后不可恢复。'))return;
+  try{await dbDeleteItem(id);await fetchAll();toast('已删除');render()}catch(e){}
+}
+
+/* ================= 导入导出 ================= */
+function exportData(){
+  const q1=s=>'"'+String(s??'').replace(/"/g,'""')+'"';
+  const head=['ID','阶段','主题','形式','当前状态','负责人','制作人','审核人','提交日期','发布截至日','发布渠道/平台','发布链接','客户吸引力','产宣价值','重要紧急度','曝光/阅读','点赞','评论','涨粉','收藏','转发','标签','备注','内容脚本','创建时间'];
+  const rows=data.items.map(i=>{
+    const m=i.metrics||{};const r=i.ratings||{};
+    return [i.id,(STAGES.find(s=>s.key===i.stage)||{}).name||'',i.title,ctVal(i),i.produceStatus,
+      i.assignee||'',i.producer||'',i.reviewer||'',i.plannedDate||'',i.deadline||'',
+      i.channel||i.platform||'',i.pubUrl||'',r.appeal||'',r.promo||'',r.urgency||'',
+      m.views??'',m.likes??'',m.comments??'',m.follows??'',m.favs??'',m.shares??'',
+      (i.tags||[]).join(' '),i.note||'',i.script||'',new Date(i.createdAt).toISOString().slice(0,16).replace('T',' ')
+    ].map(q1).join(',');
+  });
+  const csv='\ufeff'+head.map(q1).join(',')+'\n'+rows.join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='日本留学私塾-自媒体工作台数据_'+todayStr()+'.csv';a.click();
+  toast('已导出 CSV 数据（'+data.items.length+' 条）');
+}
+async function importData(input){
+  const f=input.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=async()=>{
+    try{
+      const d=JSON.parse(r.result);
+      if(!d.items)throw 0;
+      let added=0;
+      for(const it of d.items){
+        if(!data.items.find(x=>x.id==it.id)){const {id,...rest}=it;await dbInsertItem(rest);added++}
+      }
+      for(const m of (d.members||[])){if(!data.members.includes(m)){await dbAddMember(m)}}
+      await fetchAll();toast('导入完成，新增 '+added+' 条');render();
+    }catch(e){toast('文件格式不正确')}
+  };
+  r.readAsText(f);input.value='';
+}
+
+/* ================= 模态框 ================= */
+function openModal(title,body,onOk,okText){
+  document.getElementById('modalBox').innerHTML='<h2>'+title+'</h2>'+body
+  +'<div class="foot"><button class="btn ghost" onclick="closeModal()">取消</button><button class="btn primary" id="modalOk">'+(okText||'保存')+'</button></div>';
+  document.getElementById('modalOk').onclick=onOk;
+  document.getElementById('modalMask').classList.add('open');
+}
+function closeModal(){document.getElementById('modalMask').classList.remove('open')}
+document.getElementById('modalMask').addEventListener('click',e=>{if(e.target.id==='modalMask')closeModal()});
+function v(id){const el=document.getElementById(id);return el?el.value.trim():''}
+function splitTags(s){return s?s.split(/[,，]/).map(t=>t.trim()).filter(Boolean):[]}
+function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+/* ================= 启动：加载云端数据 + 定时同步 ================= */
+(async function boot(){
+  try{
+    await fetchAll();
+  }catch(e){
+    main.innerHTML='<div class="empty" style="padding-top:80px">⚠️ 无法连接云端数据，请检查网络后刷新页面</div>';
+    return;
+  }
+  await seedIfEmpty();
+  if(!me&&data.members.length)me=data.members[0];
+  render();
+  /* 每 5 秒拉取云端最新数据，实现多人近实时协作 */
+  setInterval(async()=>{
+    if(document.getElementById('modalMask').classList.contains('open'))return; // 表单填写中不刷新
+    try{
+      const before=JSON.stringify([data.items,data.members]);
+      await fetchAll();
+      if(JSON.stringify([data.items,data.members])!==before)render();
+    }catch(e){}
+  },5000);
+})();
+</script>
+</body>
+</html>
